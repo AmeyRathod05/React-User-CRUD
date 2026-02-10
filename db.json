@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "firstName": "Mighty",
+      "lastName": "Mouse",
+      "phoneNumber": "+3432234234",
+      "email": "mighty@mail.com",
+      "id": 1
+    },
+    {
+      "firstName": "Ilia",
+      "lastName": "Topuria",
+      "phoneNumber": "+9999999999",
+      "email": "ilia@elmatador.com",
+      "id": 3
+    },
+    {
+      "firstName": "Justin",
+      "lastName": "Gatche",
+      "phoneNumber": "+7777777777",
+      "email": "justin@highlight.com",
+      "id": 4
+    },
+    {
+      "firstName": "Alex",
+      "lastName": "Perera",
+      "phoneNumber": "+1231231231",
+      "email": "alex@chama.com",
+      "id": 5
+    },
+    {
+      "firstName": "Jon",
+      "lastName": "Jones",
+      "phoneNumber": "+1231231233",
+      "email": "jonny@bones.com",
+      "id": 6
+    },
+    {
+      "firstName": "Conor",
+      "lastName": "Mcgregor",
+      "phoneNumber": "+7777777777",
+      "email": "conor@thenotorious.com",
+      "id": 7
+    },
+    {
+      "firstName": "Merab",
+      "lastName": "Dvalishvili",
+      "phoneNumber": "+3433443441",
+      "email": "merab@themachine.com",
+      "id": 8
+    }
+  ]
+}
