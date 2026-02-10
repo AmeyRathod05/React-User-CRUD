@@ -5,7 +5,7 @@ import UserTable from './components/UserTable';
 import { Notifications, type Notification } from './components/Notifications';
 import type { User } from './types/user';
 
-const API_BASE_URL = 'http://localhost:3001/users';
+const API_BASE_URL = '/api/users';
 
 const App: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
