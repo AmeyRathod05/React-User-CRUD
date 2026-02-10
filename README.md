@@ -1,71 +1,135 @@
-# User CRUD Test Task
+User CRUD Test Task
 
-Simple React + TypeScript application for managing user records with extensible form and CRUD operations.
+A simple React + TypeScript application for managing user records with an extensible, configuration-driven form and full CRUD operations.
 
-## Setup Instructions
+Setup Instructions
+Prerequisites
 
-### Prerequisites
-- Node.js ≥ 18
-- npm / yarn / pnpm
+Node.js ≥ 18
 
-### Steps
+npm / yarn / pnpm
+
+Steps
 1. Clone the repository
-   ```bash
-   git clone https://github.com/AmeyRathod05/React-User-CRUD.git
-   cd React-User-CRUD
- 
-Install dependencies 
-Bash npm install
-Start the development server (in-memory API – recommended for this test)Bashnpm run dev→ Open http://localhost:5173 
+git clone https://github.com/AmeyRathod05/React-User-CRUD.git
+cd React-User-CRUD
 
-Alternative (persistent data with JSON Server):
-Install json-server (one-time):Bashnpm install -g json-server
-Create db.json in project root (if not present):JSON{ "users": [] }
-Run both servers:Bash# In one terminal
+2. Install dependencies
+npm install
+
+3. Start the development server (In-memory API – recommended for this test)
 npm run dev
 
-# In second terminal
+
+Open the app in your browser:
+
+http://localhost:5173
+
+Alternative: Persistent Data with JSON Server
+1. Install json-server (one-time)
+npm install -g json-server
+
+2. Create db.json in the project root (if not present)
+{
+  "users": []
+}
+
+3. Run both servers
+
+Terminal 1
+
+npm run dev
+
+
+Terminal 2
+
 json-server --watch db.json --port 3001
-→ API available at http://localhost:3001/users
-Build for production / deploymentBashnpm run build
+
+
+API will be available at:
+
+http://localhost:3001/users
+
+Build for Production / Deployment
+npm run build
 
 How to Add New Fields to the Form
+
 The form is configuration-driven for easy extensibility.
 
-Open src/config/userFields.ts
-Add a new field object to the exported array:TypeScriptexport const userFormFields = [
+1. Open the configuration file
+src/config/userFields.ts
+
+2. Add a new field object to the exported array
+export const userFormFields = [
   // ... existing fields ...
   {
-    name: "dateOfBirth",               // unique key
+    name: "dateOfBirth",        // unique key
     label: "Date of Birth",
-    type: "date",                      // input type
+    type: "date",               // input type
     required: false,
-    validation: {                      // optional yup rules
-      // Example: required: "Date is required",
+    validation: {
+      // Example:
+      // required: "Date is required",
     }
   }
 ];
-Save the file.
 
-→ The new field will automatically:
+3. Save the file
+
+✅ The new field will automatically:
 
 Appear in the form with label and validation
+
 Show in the users table
-Be sent/received via API
-No changes needed in UserForm.tsx, App.tsx or API handler
+
+Be sent and received via the API
+
+🚫 No changes required in:
+
+UserForm.tsx
+
+App.tsx
+
+API handlers
 
 Assumptions & Design Decisions
+Mock API
 
-Mock API:
-Primary: In-memory data inside /api/users.ts (Vercel serverless function style) – resets on redeploy, suitable for demo/test task.
-Secondary: JSON Server for local development with file persistence (via db.json).
+Primary: In-memory data inside /api/users.ts
 
-No external hosted API used – everything runs from the same repo/deployment.
-Form library: react-hook-form + yup → chosen for performance, clean validation, and ease of dynamic fields.
-Data persistence: Not required for test task → in-memory is acceptable (real production would use a database).
-Styling: Minimal plain CSS / Tailwind classes – focus on functionality over design.
-Error handling: Basic alerts + loading states (can be improved with toasts in future).
-No authentication/pagination/sorting – kept minimal per test scope.
-Branch: Assumes main or master – code works with either.
+Vercel serverless function style
 
-Live Demo: [https://react-user-crud-lyart.vercel.app/]
+Resets on redeploy
+
+Suitable for demo/test tasks
+
+Secondary: JSON Server
+
+Local development with file persistence via db.json
+
+General Decisions
+
+No external hosted API used
+
+Everything runs from the same repository/deployment
+
+Form library: react-hook-form + yup
+
+Chosen for performance, clean validation, and dynamic fields
+
+Data persistence not required for test task
+
+Styling kept minimal (CSS / Tailwind)
+
+Focus on functionality over UI polish
+
+Error handling via basic alerts and loading states
+
+No authentication, pagination, or sorting (out of scope)
+
+Branch assumed: main or master
+
+Live Demo
+
+🔗 https://react-user-crud-lyart.vercel.app/
