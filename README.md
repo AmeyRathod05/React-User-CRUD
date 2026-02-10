@@ -1,123 +1,71 @@
-# User CRUD Application – React + TypeScript + Vite
+# User CRUD Test Task
 
-Simple, extensible React-based CRUD application for managing user records.  
-Built as part of a development support role test task.
+Simple React + TypeScript application for managing user records with extensible form and CRUD operations.
 
-Features:
-- Create, Read, Update, Delete users
-- Form with input validation (required fields, email & phone patterns)
-- Extensible field configuration (add new fields with minimal changes)
-- Mock API using in-memory data (serverless-friendly) or JSON Server
-- Clean, modular structure with react-hook-form + yup
+## Setup Instructions
 
-## Technologies & Stack
+### Prerequisites
+- Node.js ≥ 18
+- npm / yarn / pnpm
 
-- **Frontend Framework**: React 18+
-- **Build Tool**: Vite
-- **Language**: TypeScript
-- **Form Library**: react-hook-form + yup (for validation)
-- **HTTP Client**: axios
-- **Styling**: Plain CSS / Tailwind (optional) or Material-UI (optional)
-- **Mock API Options**:
-  - In-memory (recommended for Vercel deployment – serverless)
-  - JSON Server (for local development with persistent data)
-
-## Dependencies
-
-### Core (required)
-
-```json
-"dependencies": {
-  "react": "^18.3.1",
-  "react-dom": "^18.3.1",
-  "axios": "^1.7.7",
-  "react-hook-form": "^7.53.0",
-  "@hookform/resolvers": "^3.9.0",
-  "yup": "^1.4.0"
-}
-Development (devDependencies)
-JSON"devDependencies": {
-  "@types/react": "^18.3.11",
-  "@types/react-dom": "^18.3.1",
-  "@vitejs/plugin-react": "^4.3.2",
-  "typescript": "^5.6.2",
-  "vite": "^5.4.8",
-  "eslint": "^9.13.0",
-  "@typescript-eslint/eslint-plugin": "^8.10.0",
-  "@typescript-eslint/parser": "^8.10.0",
-  "json-server": "^1.0.0-alpha.23"   // optional – only if using JSON Server locally
-}
-(Exact versions may vary slightly depending on when you created the project.)
-Project Structure (main folders/files)
-text├── src/
-│   ├── components/
-│   │   └── UserForm.tsx           ← Reusable form with config-driven fields
-│   ├── config/
-│   │   └── userFields.ts          ← Extensible field definitions + validation
-│   ├── api/
-│   │   └── users.ts               ← Serverless API handler (for Vercel)
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── public/
-├── api/                           ← Serverless functions (Vercel)
-├── db.json                        ← Optional – for JSON Server
-├── vite.config.ts
-├── tsconfig.json
-├── tsconfig.node.json
-├── package.json
-└── README.md
-Setup & Run Locally
-Prerequisites
-
-Node.js ≥ 18
-npm / yarn / pnpm
-
+### Steps
 1. Clone the repository
-Bashgit clone https://github.com/AmeyRathod05/React-User-CRUD.git
-cd React-User-CRUD
-2. Install dependencies
+   ```bash
+   git clone https://github.com/AmeyRathod05/React-User-CRUD.git
+   cd React-User-CRUD
+ 
+Install dependencies 
 Bash npm install
-# or
-yarn install
-# or
-pnpm install
+Start the development server (in-memory API – recommended for this test)Bashnpm run dev→ Open http://localhost:5173 
 
-Option A: Run with In-Memory API (Recommended – Vercel compatible)
-Bash npm run dev
-
-Opens http://localhost:5173 (Vite default)
-Uses in-memory data stored in /api/users.ts
-Data resets on server restart (normal for test/demo)
-
-Option B: Run with JSON Server (persistent data locally)
-
-Install json-server globally (or use npx)
-
-Bashnpm install -g json-server
-# or use npx without global install
-
-Create or use db.json in root (example content):
-
-JSON{
-  "users": []
-}
-
-Start both frontend + mock API (recommended: use concurrently)
-
-Add to package.json scripts (if not already there):
-JSON"scripts": {
-  "dev": "vite",
-  "json-server": "json-server --watch db.json --port 3001",
-  "start:all": "concurrently \"npm run dev\" \"npm run json-server\""
-}
-Then run:
-Bashnpm run start:all
-Or separately:
-Bash# Terminal 1
+Alternative (persistent data with JSON Server):
+Install json-server (one-time):Bashnpm install -g json-server
+Create db.json in project root (if not present):JSON{ "users": [] }
+Run both servers:Bash# In one terminal
 npm run dev
 
-# Terminal 2
-npx json-server --watch db.json --port 3001
-API will be at: http://localhost:3001/users
-Frontend calls: /api/users (proxied) or change to http://localhost:3001/users in code.
+# In second terminal
+json-server --watch db.json --port 3001
+→ API available at http://localhost:3001/users
+Build for production / deploymentBashnpm run build
+
+How to Add New Fields to the Form
+The form is configuration-driven for easy extensibility.
+
+Open src/config/userFields.ts
+Add a new field object to the exported array:TypeScriptexport const userFormFields = [
+  // ... existing fields ...
+  {
+    name: "dateOfBirth",               // unique key
+    label: "Date of Birth",
+    type: "date",                      // input type
+    required: false,
+    validation: {                      // optional yup rules
+      // Example: required: "Date is required",
+    }
+  }
+];
+Save the file.
+
+→ The new field will automatically:
+
+Appear in the form with label and validation
+Show in the users table
+Be sent/received via API
+No changes needed in UserForm.tsx, App.tsx or API handler
+
+Assumptions & Design Decisions
+
+Mock API:
+Primary: In-memory data inside /api/users.ts (Vercel serverless function style) – resets on redeploy, suitable for demo/test task.
+Secondary: JSON Server for local development with file persistence (via db.json).
+
+No external hosted API used – everything runs from the same repo/deployment.
+Form library: react-hook-form + yup → chosen for performance, clean validation, and ease of dynamic fields.
+Data persistence: Not required for test task → in-memory is acceptable (real production would use a database).
+Styling: Minimal plain CSS / Tailwind classes – focus on functionality over design.
+Error handling: Basic alerts + loading states (can be improved with toasts in future).
+No authentication/pagination/sorting – kept minimal per test scope.
+Branch: Assumes main or master – code works with either.
+
+Live Demo: [https://react-user-crud-lyart.vercel.app/]
