@@ -21,7 +21,14 @@ let users: User[] = [
 let nextId = 9;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const { method } = req;
+  const { method, url } = req;
+
+  // Debug logging
+  console.log('=== API Request ===');
+  console.log('Method:', method);
+  console.log('URL:', url);
+  console.log('Query params:', req.query);
+  console.log('Headers:', req.headers);
 
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,6 +40,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // Parse the URL to extract path parameters
+    const pathname = new URL(url || '', `http://${req.headers.host}`).pathname;
+    const pathParts = pathname.split('/').filter(Boolean);
+    
+    console.log('Pathname:', pathname);
+    console.log('Path parts:', pathParts);
+    
+    // Extract ID from path if it exists (e.g., /api/users/1)
+    const pathId = pathParts.length > 1 && pathParts[0] === 'api' && pathParts[1] === 'users' 
+      ? pathParts[2] 
+      : null;
+    
+    console.log('Path ID:', pathId);
+
     if (method === 'GET') {
       return res.status(200).json(users);
     }
@@ -58,10 +79,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (method === 'PUT') {
       // Handle both path parameter (/api/users/1) and query parameter (/api/users?id=1)
-      const id = Number(req.query.id) || Number(req.url?.split('/').pop());
+      const id = pathId ? Number(pathId) : Number(req.query.id);
+      
+      console.log('PUT - Final ID:', id);
+      
+      if (!id || isNaN(id)) {
+        console.log('Invalid ID provided');
+        return res.status(400).json({ error: 'Valid user ID is required' });
+      }
+
       const index = users.findIndex(u => u.id === id);
       
+      console.log('User index:', index);
+      console.log('Available users:', users.map(u => u.id));
+      
       if (index === -1) {
+        console.log('User not found');
         return res.status(404).json({ error: 'User not found' });
       }
 
@@ -73,12 +106,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       users[index] = { ...users[index], ...req.body };
+      console.log('User updated successfully');
       return res.status(200).json(users[index]);
     }
 
     if (method === 'DELETE') {
       // Handle both path parameter (/api/users/1) and query parameter (/api/users?id=1)
-      const id = Number(req.query.id) || Number(req.url?.split('/').pop());
+      const id = pathId ? Number(pathId) : Number(req.query.id);
+      
+      if (!id || isNaN(id)) {
+        return res.status(400).json({ error: 'Valid user ID is required' });
+      }
+
       const index = users.findIndex(u => u.id === id);
       
       if (index === -1) {
