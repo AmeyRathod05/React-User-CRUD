@@ -57,7 +57,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (method === 'PUT') {
-      const id = Number(req.query.id);
+      // Handle both path parameter (/api/users/1) and query parameter (/api/users?id=1)
+      const id = Number(req.query.id) || Number(req.url?.split('/').pop());
       const index = users.findIndex(u => u.id === id);
       
       if (index === -1) {
@@ -76,7 +77,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (method === 'DELETE') {
-      const id = Number(req.query.id);
+      // Handle both path parameter (/api/users/1) and query parameter (/api/users?id=1)
+      const id = Number(req.query.id) || Number(req.url?.split('/').pop());
       const index = users.findIndex(u => u.id === id);
       
       if (index === -1) {
