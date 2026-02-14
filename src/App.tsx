@@ -52,7 +52,7 @@ const App: React.FC = () => {
     try {
       if (editingUser && editingUser.id) {
         // Update existing user
-        await axios.put(`${API_BASE_URL}/${editingUser.id}`, userData);
+        await axios.put(`${API_BASE_URL}?id=${editingUser.id}`, userData);
         setEditingUser(null);
         addNotification('User updated successfully!', 'success');
       } else {
@@ -81,7 +81,7 @@ const App: React.FC = () => {
     setError(null);
     
     try {
-      await axios.delete(`${API_BASE_URL}/${userId}`);
+      await axios.delete(`${API_BASE_URL}?id=${userId}`);
       await fetchUsers(); // Refresh the list
       addNotification('User deleted successfully!', 'success');
     } catch (err) {
